@@ -19,8 +19,7 @@ export default function HistoryScreen({
     return (
       <View>
         <SectionCard
-          title="All activity"
-          subtitle="A virtualized feed that stays smooth even when you keep years of daily records."
+          title="History"
         >
           <View style={styles.archivePreview}>
             {summary.dailyEntries.slice(0, 5).map((entry) => (
@@ -51,8 +50,7 @@ export default function HistoryScreen({
       ListEmptyComponent={
         <EmptyState
           icon="🗂️"
-          title="No activity yet"
-          description="Your saved logs will appear here once you start tracking."
+          title="No history"
         />
       }
       ItemSeparatorComponent={() => <View style={styles.rowSpacer} />}
@@ -72,10 +70,11 @@ function createStyles(colors) {
       flex: 1,
       backgroundColor: colors.background,
     },
-    content: {
-      paddingHorizontal: 16,
-      paddingBottom: 24,
-    },
+  content: {
+    paddingHorizontal: 16,
+    paddingTop: 12,
+    paddingBottom: 120,
+  },
     archivePreview: {
       gap: 12,
     },

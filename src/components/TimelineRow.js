@@ -15,7 +15,7 @@ function TimelineRow({ item, onDelete, isSaving }) {
       </View>
       <View style={styles.copy}>
         <Text style={styles.title}>{item.title}</Text>
-        <Text style={styles.subtitle}>{item.subtitle}</Text>
+        <Text style={styles.subtitle}>{item.dayLabel}</Text>
       </View>
       <View style={styles.side}>
         <Text style={styles.time}>{formatTime(item.loggedAt)}</Text>

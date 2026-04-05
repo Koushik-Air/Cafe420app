@@ -27,7 +27,6 @@ export default function DashboardScreen({
     >
       <SectionCard
         title={formatLongDate(new Date())}
-        subtitle="Fast thumb-friendly tracking with a bright layout and a one-tap switch to AMOLED dark."
         rightSlot={
           <View style={styles.scoreBadge}>
             <Text style={styles.scoreValue}>{summary.todayTotalCount}</Text>
@@ -36,10 +35,10 @@ export default function DashboardScreen({
         }
       >
         <View style={styles.metricsRow}>
-          <MetricCard label="Current streak" value={`${summary.streak} days`} />
-          <MetricCard label="Active days" value={String(summary.activeDays)} tone={colors.blue} />
+          <MetricCard label="Streak" value={`${summary.streak}d`} />
+          <MetricCard label="Days" value={String(summary.activeDays)} tone={colors.blue} />
           <MetricCard
-            label="Daily average"
+            label="Avg"
             value={summary.averageDailyLogs}
             tone={colors.orange}
           />
@@ -64,8 +63,7 @@ export default function DashboardScreen({
       <View style={styles.sectionSpacing} />
 
       <SectionCard
-        title="Recent rhythm"
-        subtitle="A clean week-at-a-glance view so trends stay readable in both bright and dark modes."
+        title="Week"
       >
         <View style={styles.summaryList}>
           {summary.weeklyEntries.map((entry) => (
@@ -82,10 +80,11 @@ function createStyles(colors) {
     scroll: {
       flex: 1,
     },
-    content: {
-      paddingHorizontal: 16,
-      paddingBottom: 24,
-    },
+  content: {
+    paddingHorizontal: 16,
+    paddingTop: 12,
+    paddingBottom: 120,
+  },
     scoreBadge: {
       backgroundColor: colors.mint,
       borderRadius: 18,

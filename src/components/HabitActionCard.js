@@ -22,17 +22,15 @@ export default function HabitActionCard({
         </View>
         <View style={styles.topCopy}>
           <Text style={styles.title}>{habit.label}</Text>
-          <Text style={styles.subtitle}>{habit.actionLabel}</Text>
         </View>
       </View>
 
       <View style={styles.metricRow}>
         <View>
           <Text style={styles.metricValue}>{countToday}</Text>
-          <Text style={styles.metricLabel}>logged today</Text>
         </View>
         <View style={styles.targetPill}>
-          <Text style={styles.targetText}>Target {habit.target}</Text>
+          <Text style={styles.targetText}>{habit.target}/day</Text>
         </View>
       </View>
 
@@ -49,6 +47,8 @@ export default function HabitActionCard({
         <Pressable
           onPress={onUndo}
           disabled={!countToday || isSaving}
+          accessibilityRole="button"
+          accessibilityLabel={`Remove one ${habit.label} log`}
           android_disableSound
           android_ripple={{ color: withAlpha(colors.paper, colors.isDark ? 0.08 : 0.06), borderless: false }}
           style={({ pressed }) => [
@@ -57,14 +57,14 @@ export default function HabitActionCard({
             pressed && countToday && !isSaving && styles.pressedButton,
           ]}
         >
-          <Text style={[styles.secondaryText, (!countToday || isSaving) && styles.disabledText]}>
-            Undo
-          </Text>
+          <Text style={[styles.secondaryText, styles.iconText, (!countToday || isSaving) && styles.disabledText]}>-</Text>
         </Pressable>
 
         <Pressable
           onPress={onLog}
           disabled={isSaving}
+          accessibilityRole="button"
+          accessibilityLabel={`Add one ${habit.label} log`}
           android_disableSound
           android_ripple={{ color: withAlpha(colors.black, 0.12), borderless: false }}
           style={({ pressed }) => [
@@ -74,7 +74,7 @@ export default function HabitActionCard({
             isSaving && styles.disabledButton,
           ]}
         >
-          <Text style={styles.primaryText}>{isSaving ? 'Saving' : 'Log now'}</Text>
+          <Text style={[styles.primaryText, styles.iconText]}>+</Text>
         </Pressable>
       </View>
     </View>
@@ -106,20 +106,15 @@ function createStyles(colors) {
     topCopy: {
       flex: 1,
       marginLeft: 14,
+      justifyContent: 'center',
     },
     title: {
       fontFamily: 'Manrope_700Bold',
       fontSize: 18,
       color: colors.paper,
     },
-    subtitle: {
-      marginTop: 4,
-      fontFamily: 'Manrope_400Regular',
-      fontSize: 13,
-      color: colors.mutedText,
-    },
     metricRow: {
-      marginTop: 18,
+      marginTop: 16,
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'space-between',
@@ -129,11 +124,6 @@ function createStyles(colors) {
       fontSize: 32,
       color: colors.paper,
       letterSpacing: -1,
-    },
-    metricLabel: {
-      fontFamily: 'Manrope_500Medium',
-      fontSize: 13,
-      color: colors.paperSoft,
     },
     targetPill: {
       paddingHorizontal: 12,
@@ -190,6 +180,11 @@ function createStyles(colors) {
       fontFamily: 'Manrope_700Bold',
       fontSize: 14,
       color: colors.paper,
+    },
+    iconText: {
+      fontSize: 24,
+      lineHeight: 24,
+      letterSpacing: 0,
     },
     disabledButton: {
       opacity: 0.45,

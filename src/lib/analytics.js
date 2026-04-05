@@ -58,8 +58,8 @@ export function buildTrackerSummary(events) {
     return {
       ...event,
       habit,
-      title: habit.actionLabel,
-      subtitle: `${relativeDayLabel(event.loggedAt)} at ${formatTime(event.loggedAt)}`,
+      title: habit.label,
+      dayLabel: relativeDayLabel(event.loggedAt),
     };
   });
 

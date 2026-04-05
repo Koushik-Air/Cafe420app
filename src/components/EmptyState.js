@@ -13,7 +13,7 @@ export default function EmptyState({ icon, title, description }) {
         <Text style={styles.icon}>{icon}</Text>
       </View>
       <Text style={styles.title}>{title}</Text>
-      <Text style={styles.description}>{description}</Text>
+      {description ? <Text style={styles.description}>{description}</Text> : null}
     </View>
   );
 }

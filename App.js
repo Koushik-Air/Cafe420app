@@ -174,10 +174,7 @@ export default function App() {
         translucent={false}
       />
       <ActivityIndicator size="large" color={colors.mint} />
-      <Text style={styles.loadingTitle}>Preparing your tracker</Text>
-      <Text style={styles.loadingSubtitle}>
-        Loading your habits, history, and theme preference.
-      </Text>
+      <Text style={styles.loadingTitle}>Loading</Text>
     </View>
   ) : (
     <View style={styles.root}>
@@ -191,13 +188,9 @@ export default function App() {
       <View style={styles.safeArea}>
         <View style={[styles.header, { paddingTop: statusBarHeight + 14 }]}>
           <View style={styles.headerTopRow}>
-            <Text style={styles.eyebrow}>Cafe 420 Daily</Text>
+            <Text style={styles.title}>Cafe 420 Daily</Text>
             <ThemeToggle />
           </View>
-          <Text style={styles.title}>Track the rituals that shape your day.</Text>
-          <Text style={styles.subtitle}>
-            Bright white by day, pure black by night, and still tuned for quick Android logging.
-          </Text>
         </View>
 
         <View style={styles.content}>
@@ -245,40 +238,27 @@ function createStyles(colors) {
     },
     safeArea: {
       flex: 1,
+      paddingBottom: 94,
     },
     header: {
       paddingHorizontal: 20,
-      paddingBottom: 12,
+      paddingBottom: 10,
     },
     headerTopRow: {
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'space-between',
       gap: 12,
-      marginBottom: 12,
-    },
-    eyebrow: {
-      fontFamily: 'Manrope_700Bold',
-      fontSize: 12,
-      color: colors.mint,
-      letterSpacing: 1.5,
-      textTransform: 'uppercase',
+      minHeight: 44,
     },
     title: {
       fontFamily: 'Manrope_800ExtraBold',
-      fontSize: 30,
-      lineHeight: 36,
+      fontSize: 26,
+      lineHeight: 30,
       color: colors.paper,
       letterSpacing: -0.8,
-      maxWidth: 330,
-    },
-    subtitle: {
-      marginTop: 10,
-      fontFamily: 'Manrope_400Regular',
-      fontSize: 15,
-      lineHeight: 23,
-      color: colors.paperSoft,
-      maxWidth: 340,
+      flex: 1,
+      marginRight: 12,
     },
     content: {
       flex: 1,
@@ -305,15 +285,6 @@ function createStyles(colors) {
       fontFamily: 'Manrope_700Bold',
       fontSize: 18,
       color: colors.paper,
-    },
-    loadingSubtitle: {
-      marginTop: 8,
-      fontFamily: 'Manrope_400Regular',
-      fontSize: 14,
-      lineHeight: 22,
-      color: colors.mutedText,
-      textAlign: 'center',
-      maxWidth: 280,
     },
   });
 }

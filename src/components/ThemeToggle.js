@@ -5,7 +5,7 @@ import { THEME_MODES, useAppTheme, withAlpha } from '../theme';
 
 const OPTIONS = [
   { id: THEME_MODES.light, label: 'Light' },
-  { id: THEME_MODES.amoled, label: 'AMOLED' },
+  { id: THEME_MODES.amoled, label: 'Black' },
 ];
 
 export default function ThemeToggle() {

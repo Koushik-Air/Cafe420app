@@ -13,7 +13,6 @@ function DaySummaryRow({ entry }) {
     <View style={styles.row}>
       <View style={styles.leading}>
         <Text style={styles.dayLabel}>{relativeDayLabel(entry.date)}</Text>
-        <Text style={styles.totalLabel}>{entry.totalCount} logs</Text>
       </View>
       <View style={styles.counts}>
         {HABITS.map((habit) => (
@@ -47,12 +46,6 @@ function createStyles(colors) {
       fontFamily: 'Manrope_700Bold',
       fontSize: 15,
       color: colors.paper,
-    },
-    totalLabel: {
-      marginTop: 4,
-      fontFamily: 'Manrope_400Regular',
-      fontSize: 12,
-      color: colors.mutedText,
     },
     counts: {
       flexDirection: 'row',

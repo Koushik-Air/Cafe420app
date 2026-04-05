@@ -6,7 +6,7 @@ import SectionCard from '../components/SectionCard';
 import { HABITS } from '../habits';
 import { useAppTheme, withAlpha } from '../theme';
 
-function InsightRow({ habit, total, peakDay }) {
+function InsightRow({ habit, total }) {
   const { colors } = useAppTheme();
   const styles = React.useMemo(() => createRowStyles(colors), [colors]);
 
@@ -15,14 +15,8 @@ function InsightRow({ habit, total, peakDay }) {
       <View style={[styles.insightIconWrap, { backgroundColor: withAlpha(habit.accent, 0.14) }]}>
         <Text style={styles.insightIcon}>{habit.icon}</Text>
       </View>
-      <View style={styles.insightCopy}>
-        <Text style={styles.insightTitle}>{habit.label}</Text>
-        <Text style={styles.insightSubtitle}>{total} total logs</Text>
-      </View>
-      <View style={styles.insightSide}>
-        <Text style={styles.insightSideLabel}>Best day</Text>
-        <Text style={styles.insightSideValue}>{peakDay}</Text>
-      </View>
+      <Text style={styles.insightTitle}>{habit.label}</Text>
+      <Text style={styles.insightSideValue}>{total}</Text>
     </View>
   );
 }
@@ -41,8 +35,7 @@ export default function InsightsScreen({ summary }) {
       >
         <EmptyState
           icon="📈"
-          title="No insights yet"
-          description="Start logging habits and this screen will turn your streaks and totals into patterns you can actually use."
+          title="No stats"
         />
       </ScrollView>
     );
@@ -56,17 +49,16 @@ export default function InsightsScreen({ summary }) {
       showsVerticalScrollIndicator={false}
     >
       <SectionCard
-        title="Performance snapshot"
-        subtitle="Readable at full brightness and equally comfortable in true black AMOLED mode."
+        title="Stats"
       >
         <View style={styles.heroStats}>
           <View style={styles.heroBlock}>
             <Text style={styles.heroValue}>{summary.totalLogs}</Text>
-            <Text style={styles.heroLabel}>Lifetime logs</Text>
+            <Text style={styles.heroLabel}>Logs</Text>
           </View>
           <View style={styles.heroBlock}>
             <Text style={styles.heroValue}>{summary.bestDayCount}</Text>
-            <Text style={styles.heroLabel}>Best day this week</Text>
+            <Text style={styles.heroLabel}>Best</Text>
           </View>
         </View>
       </SectionCard>
@@ -74,8 +66,7 @@ export default function InsightsScreen({ summary }) {
       <View style={styles.sectionSpacing} />
 
       <SectionCard
-        title="Habit totals"
-        subtitle="Which rituals are doing the heaviest lifting across your current routine."
+        title="Habits"
       >
         <View style={styles.rows}>
           {HABITS.map((habit) => (
@@ -83,35 +74,8 @@ export default function InsightsScreen({ summary }) {
               key={habit.id}
               habit={habit}
               total={summary.habitTotals[habit.id] || 0}
-              peakDay={`${Math.max(
-                ...summary.dailyEntries.map((entry) => entry.totals[habit.id] || 0),
-                0
-              )} logs`}
             />
           ))}
-        </View>
-      </SectionCard>
-
-      <View style={styles.sectionSpacing} />
-
-      <SectionCard
-        title="Coach notes"
-        subtitle="Helpful interpretation that still feels calm in either theme."
-      >
-        <View style={styles.notesList}>
-          <Text style={styles.note}>
-            {summary.streak >= 3
-              ? `You are on a ${summary.streak}-day streak. Keep your first log early to protect it.`
-              : 'Your streak is still early. Logging one habit before lunch is the easiest way to make it stick.'}
-          </Text>
-          <Text style={styles.note}>
-            {summary.todayTotalCount >= 3
-              ? 'Today already looks strong. A quick final check-in tonight can close the loop cleanly.'
-              : 'Today is still light. One quick tap on your next habit will noticeably improve your daily momentum.'}
-          </Text>
-          <Text style={styles.note}>
-            Coffee leads overall right now, so the app stays optimized for fast repeated logging without clutter.
-          </Text>
         </View>
       </SectionCard>
     </ScrollView>
@@ -124,10 +88,11 @@ function createStyles(colors) {
       flex: 1,
       backgroundColor: colors.background,
     },
-    content: {
-      paddingHorizontal: 16,
-      paddingBottom: 24,
-    },
+  content: {
+    paddingHorizontal: 16,
+    paddingTop: 12,
+    paddingBottom: 120,
+  },
     sectionSpacing: {
       height: 12,
     },
@@ -158,20 +123,6 @@ function createStyles(colors) {
     rows: {
       gap: 10,
     },
-    notesList: {
-      gap: 10,
-    },
-    note: {
-      fontFamily: 'Manrope_500Medium',
-      fontSize: 14,
-      lineHeight: 22,
-      color: colors.paperSoft,
-      padding: 14,
-      borderRadius: 16,
-      backgroundColor: colors.surfaceStrong,
-      borderWidth: 1,
-      borderColor: colors.line,
-    },
   });
 }
 
@@ -197,32 +148,15 @@ function createRowStyles(colors) {
     insightIcon: {
       fontSize: 20,
     },
-    insightCopy: {
-      flex: 1,
-    },
     insightTitle: {
+      flex: 1,
       fontFamily: 'Manrope_700Bold',
       fontSize: 15,
       color: colors.paper,
     },
-    insightSubtitle: {
-      marginTop: 4,
-      fontFamily: 'Manrope_400Regular',
-      fontSize: 12,
-      color: colors.mutedText,
-    },
-    insightSide: {
-      alignItems: 'flex-end',
-    },
-    insightSideLabel: {
-      fontFamily: 'Manrope_500Medium',
-      fontSize: 11,
-      color: colors.mutedText,
-    },
     insightSideValue: {
-      marginTop: 4,
       fontFamily: 'Manrope_700Bold',
-      fontSize: 12,
+      fontSize: 13,
       color: colors.paper,
     },
   });

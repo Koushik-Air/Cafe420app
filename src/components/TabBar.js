@@ -39,10 +39,11 @@ export default function TabBar({ items, selectedIndex, onSelected }) {
 function createStyles(colors) {
   return StyleSheet.create({
     outer: {
-      paddingHorizontal: 12,
-      paddingTop: 8,
-      paddingBottom: 12,
-      backgroundColor: colors.background,
+      position: 'absolute',
+      left: 12,
+      right: 12,
+      bottom: 14,
+      zIndex: 20,
     },
     inner: {
       flexDirection: 'row',
@@ -50,8 +51,13 @@ function createStyles(colors) {
       borderWidth: 1,
       borderColor: colors.line,
       padding: 5,
-      borderRadius: 24,
+      borderRadius: 26,
       gap: 4,
+      shadowColor: colors.black,
+      shadowOffset: { width: 0, height: 10 },
+      shadowOpacity: colors.isDark ? 0.32 : 0.12,
+      shadowRadius: 24,
+      elevation: 14,
     },
     tab: {
       flex: 1,
