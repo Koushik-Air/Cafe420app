@@ -1,0 +1,41 @@
+{
+  "expo": {
+    "name": "Cafe 420 Daily",
+    "slug": "cafe420-daily",
+    "version": "1.0.0",
+    "platforms": [
+      "android"
+    ],
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "scheme": "cafe420daily",
+    "description": "A polished Android ritual tracker with bright light mode and true-black AMOLED dark mode.",
+    "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#101A17"
+    },
+    "androidStatusBar": {
+      "backgroundColor": "#FFFFFF",
+      "barStyle": "dark-content",
+      "translucent": false
+    },
+    "androidNavigationBar": {
+      "backgroundColor": "#FFFFFF",
+      "barStyle": "dark-content"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#101A17"
+      },
+      "package": "com.koushik.cafe420daily"
+    },
+    "plugins": [
+      "expo-font",
+      "expo-sqlite"
+    ]
+  }
+}
