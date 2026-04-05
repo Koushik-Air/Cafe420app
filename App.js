@@ -38,7 +38,7 @@ import {
 } from './src/theme';
 
 const TABS = [
-  { label: 'Today', icon: '●' },
+  { label: 'Home', icon: '●' },
   { label: 'Insights', icon: '▲' },
   { label: 'History', icon: '■' },
 ];

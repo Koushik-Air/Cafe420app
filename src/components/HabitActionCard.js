@@ -9,15 +9,90 @@ export default function HabitActionCard({
   isSaving,
   onLog,
   onUndo,
+  compact = false,
 }) {
   const { colors } = useAppTheme();
   const styles = React.useMemo(() => createStyles(colors), [colors]);
   const progressRatio = Math.min(countToday / habit.target, 1);
+  const progressWidth = `${countToday ? Math.max(progressRatio * 100, 12) : 0}%`;
+  const cardBackground = {
+    backgroundColor: withAlpha(habit.accent, colors.isDark ? 0.14 : 0.1),
+  };
+  const iconBackground = {
+    backgroundColor: withAlpha(habit.accent, colors.isDark ? 0.18 : 0.14),
+  };
+
+  if (compact) {
+    return (
+      <View style={[styles.card, styles.compactCard, cardBackground]}>
+        <View style={[styles.compactIconWrap, iconBackground]}>
+          <Text style={styles.compactIcon}>{habit.icon}</Text>
+        </View>
+
+        <Text numberOfLines={2} style={styles.compactTitle}>
+          {habit.shortLabel || habit.label}
+        </Text>
+
+        <View style={styles.compactMetricWrap}>
+          <Text style={styles.compactMetricValue}>{countToday}</Text>
+          <Text style={styles.compactTargetText}>{habit.target}/d</Text>
+        </View>
+
+        <View style={styles.compactProgressTrack}>
+          <View
+            style={[
+              styles.progressFill,
+              { backgroundColor: habit.accent, width: progressWidth },
+            ]}
+          />
+        </View>
+
+        <View style={styles.compactActions}>
+          <Pressable
+            onPress={onUndo}
+            disabled={!countToday || isSaving}
+            accessibilityRole="button"
+            accessibilityLabel={`Remove one ${habit.label} log`}
+            android_disableSound
+            android_ripple={{ color: withAlpha(colors.paper, colors.isDark ? 0.08 : 0.06), borderless: false }}
+            style={({ pressed }) => [
+              styles.compactIconButton,
+              styles.secondaryButton,
+              (!countToday || isSaving) && styles.disabledButton,
+              pressed && countToday && !isSaving && styles.pressedButton,
+            ]}
+          >
+            <Text style={[styles.secondaryText, styles.compactButtonText, (!countToday || isSaving) && styles.disabledText]}>
+              -
+            </Text>
+          </Pressable>
+
+          <Pressable
+            onPress={onLog}
+            disabled={isSaving}
+            accessibilityRole="button"
+            accessibilityLabel={`Add one ${habit.label} log`}
+            android_disableSound
+            android_ripple={{ color: withAlpha(colors.black, 0.12), borderless: false }}
+            style={({ pressed }) => [
+              styles.compactIconButton,
+              styles.primaryButton,
+              { backgroundColor: habit.accent },
+              pressed && !isSaving && styles.pressedButton,
+              isSaving && styles.disabledButton,
+            ]}
+          >
+            <Text style={[styles.primaryText, styles.compactButtonText]}>+</Text>
+          </Pressable>
+        </View>
+      </View>
+    );
+  }
 
   return (
-    <View style={[styles.card, { backgroundColor: withAlpha(habit.accent, colors.isDark ? 0.14 : 0.1) }]}>
+    <View style={[styles.card, cardBackground]}>
       <View style={styles.topRow}>
-        <View style={[styles.iconWrap, { backgroundColor: withAlpha(habit.accent, colors.isDark ? 0.18 : 0.14) }]}>
+        <View style={[styles.iconWrap, iconBackground]}>
           <Text style={styles.icon}>{habit.icon}</Text>
         </View>
         <View style={styles.topCopy}>
@@ -38,7 +113,7 @@ export default function HabitActionCard({
         <View
           style={[
             styles.progressFill,
-            { backgroundColor: habit.accent, width: `${Math.max(progressRatio * 100, 8)}%` },
+            { backgroundColor: habit.accent, width: progressWidth },
           ]}
         />
       </View>
@@ -89,6 +164,12 @@ function createStyles(colors) {
       borderWidth: 1,
       borderColor: withAlpha(colors.paper, colors.isDark ? 0.05 : 0.08),
     },
+    compactCard: {
+      paddingHorizontal: 10,
+      paddingVertical: 12,
+      minHeight: 188,
+      alignItems: 'center',
+    },
     topRow: {
       flexDirection: 'row',
       alignItems: 'center',
@@ -103,6 +184,16 @@ function createStyles(colors) {
     icon: {
       fontSize: 26,
     },
+    compactIconWrap: {
+      width: 42,
+      height: 42,
+      borderRadius: 14,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    compactIcon: {
+      fontSize: 20,
+    },
     topCopy: {
       flex: 1,
       marginLeft: 14,
@@ -111,6 +202,15 @@ function createStyles(colors) {
     title: {
       fontFamily: 'Manrope_700Bold',
       fontSize: 18,
+      color: colors.paper,
+    },
+    compactTitle: {
+      marginTop: 10,
+      minHeight: 32,
+      fontFamily: 'Manrope_700Bold',
+      fontSize: 12,
+      lineHeight: 16,
+      textAlign: 'center',
       color: colors.paper,
     },
     metricRow: {
@@ -125,6 +225,18 @@ function createStyles(colors) {
       color: colors.paper,
       letterSpacing: -1,
     },
+    compactMetricWrap: {
+      marginTop: 10,
+      alignItems: 'center',
+      gap: 2,
+    },
+    compactMetricValue: {
+      fontFamily: 'Manrope_800ExtraBold',
+      fontSize: 28,
+      lineHeight: 30,
+      color: colors.paper,
+      letterSpacing: -0.8,
+    },
     targetPill: {
       paddingHorizontal: 12,
       paddingVertical: 8,
@@ -136,9 +248,24 @@ function createStyles(colors) {
       fontSize: 12,
       color: colors.paper,
     },
+    compactTargetText: {
+      fontFamily: 'Manrope_700Bold',
+      fontSize: 10,
+      lineHeight: 12,
+      color: colors.paper,
+      opacity: 0.78,
+    },
     progressTrack: {
       marginTop: 12,
       height: 6,
+      borderRadius: 999,
+      backgroundColor: withAlpha(colors.paper, colors.isDark ? 0.08 : 0.1),
+      overflow: 'hidden',
+    },
+    compactProgressTrack: {
+      width: '100%',
+      marginTop: 12,
+      height: 5,
       borderRadius: 999,
       backgroundColor: withAlpha(colors.paper, colors.isDark ? 0.08 : 0.1),
       overflow: 'hidden',
@@ -171,6 +298,18 @@ function createStyles(colors) {
       borderRadius: 16,
       overflow: 'hidden',
     },
+    compactActions: {
+      width: '100%',
+      flexDirection: 'row',
+      marginTop: 12,
+      gap: 8,
+    },
+    compactIconButton: {
+      flex: 1,
+      minHeight: 38,
+      paddingVertical: 0,
+      borderRadius: 14,
+    },
     primaryText: {
       fontFamily: 'Manrope_800ExtraBold',
       fontSize: 14,
@@ -185,6 +324,10 @@ function createStyles(colors) {
       fontSize: 24,
       lineHeight: 24,
       letterSpacing: 0,
+    },
+    compactButtonText: {
+      fontSize: 20,
+      lineHeight: 20,
     },
     disabledButton: {
       opacity: 0.45,

@@ -11,7 +11,7 @@ export const HABITS = [
   {
     id: 'egg',
     label: 'Boiled Egg',
-    shortLabel: 'Egg',
+    shortLabel: 'Boiled Egg',
     actionLabel: 'Made boiled egg',
     icon: '🥚',
     accent: '#D9A328',

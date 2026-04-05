@@ -1,5 +1,5 @@
 import { HABITS, getHabitById } from '../habits';
-import { getDayKey, isSameDay, relativeDayLabel, formatTime } from './date';
+import { getDayKey, isSameDay, relativeDayLabel } from './date';
 
 function createHabitTotals() {
   return HABITS.reduce((accumulator, habit) => {

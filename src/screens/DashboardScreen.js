@@ -2,11 +2,10 @@ import React from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import HabitActionCard from '../components/HabitActionCard';
-import MetricCard from '../components/MetricCard';
+import LiveClockCard from '../components/LiveClockCard';
 import SectionCard from '../components/SectionCard';
 import DaySummaryRow from '../components/DaySummaryRow';
 import { HABITS } from '../habits';
-import { formatLongDate } from '../lib/date';
 import { useAppTheme } from '../theme';
 
 export default function DashboardScreen({
@@ -25,38 +24,44 @@ export default function DashboardScreen({
       overScrollMode="never"
       showsVerticalScrollIndicator={false}
     >
-      <SectionCard
-        title={formatLongDate(new Date())}
-        rightSlot={
-          <View style={styles.scoreBadge}>
-            <Text style={styles.scoreValue}>{summary.todayTotalCount}</Text>
-            <Text style={styles.scoreLabel}>today</Text>
-          </View>
-        }
-      >
-        <View style={styles.metricsRow}>
-          <MetricCard label="Streak" value={`${summary.streak}d`} />
-          <MetricCard label="Days" value={String(summary.activeDays)} tone={colors.blue} />
-          <MetricCard
-            label="Avg"
-            value={summary.averageDailyLogs}
-            tone={colors.orange}
-          />
-        </View>
-      </SectionCard>
+      <LiveClockCard />
 
       <View style={styles.sectionSpacing} />
 
-      <View style={styles.cardStack}>
+      <View style={styles.totalCard}>
+        <View style={styles.totalHeader}>
+          <Text style={styles.totalTitle}>Total</Text>
+          <Text style={styles.totalCount}>{summary.totalLogs}</Text>
+        </View>
+
+        <View style={styles.metricsRow}>
+          {HABITS.map((habit) => (
+            <View key={habit.id} style={styles.totalItem}>
+              <Text style={styles.totalItemValue}>
+                {summary.habitTotals[habit.id] || 0}
+              </Text>
+              <Text numberOfLines={1} style={styles.totalItemLabel}>
+                {habit.shortLabel || habit.label}
+              </Text>
+            </View>
+          ))}
+        </View>
+      </View>
+
+      <View style={styles.sectionSpacing} />
+
+      <View style={styles.cardRow}>
         {HABITS.map((habit) => (
-          <HabitActionCard
-            key={habit.id}
-            habit={habit}
-            countToday={summary.todayTotals[habit.id] || 0}
-            isSaving={isSaving}
-            onLog={() => onLogHabit(habit.id)}
-            onUndo={() => onUndoLatest(habit.id)}
-          />
+          <View key={habit.id} style={styles.cardSlot}>
+            <HabitActionCard
+              compact
+              habit={habit}
+              countToday={summary.todayTotals[habit.id] || 0}
+              isSaving={isSaving}
+              onLog={() => onLogHabit(habit.id)}
+              onUndo={() => onUndoLatest(habit.id)}
+            />
+          </View>
         ))}
       </View>
 
@@ -80,39 +85,76 @@ function createStyles(colors) {
     scroll: {
       flex: 1,
     },
-  content: {
-    paddingHorizontal: 16,
-    paddingTop: 12,
-    paddingBottom: 120,
-  },
-    scoreBadge: {
-      backgroundColor: colors.mint,
-      borderRadius: 18,
-      paddingHorizontal: 12,
-      paddingVertical: 8,
-      alignItems: 'center',
-      minWidth: 62,
+    content: {
+      paddingHorizontal: 16,
+      paddingTop: 12,
+      paddingBottom: 120,
     },
-    scoreValue: {
+    totalCard: {
+      backgroundColor: colors.surface,
+      borderRadius: 22,
+      paddingHorizontal: 14,
+      paddingVertical: 13,
+      borderWidth: 1,
+      borderColor: colors.line,
+    },
+    totalHeader: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      gap: 12,
+      marginBottom: 10,
+    },
+    totalTitle: {
+      fontFamily: 'Manrope_700Bold',
+      fontSize: 17,
+      lineHeight: 20,
+      color: colors.paper,
+      letterSpacing: -0.2,
+    },
+    totalCount: {
       fontFamily: 'Manrope_800ExtraBold',
       fontSize: 22,
-      color: colors.onAccent,
       lineHeight: 24,
-    },
-    scoreLabel: {
-      fontFamily: 'Manrope_700Bold',
-      fontSize: 11,
-      color: colors.onAccent,
-      textTransform: 'uppercase',
-      letterSpacing: 0.8,
+      color: colors.paper,
+      letterSpacing: -0.8,
     },
     metricsRow: {
       flexDirection: 'row',
-      flexWrap: 'wrap',
+      gap: 8,
+    },
+    totalItem: {
+      flex: 1,
+      minWidth: 0,
+      alignItems: 'center',
+      justifyContent: 'center',
+      paddingVertical: 2,
+    },
+    totalItemLabel: {
+      fontFamily: 'sans-serif-condensed',
+      fontWeight: '700',
+      fontSize: 12,
+      lineHeight: 14,
+      color: colors.mutedText,
+      marginTop: 4,
+      letterSpacing: 0.2,
+      textAlign: 'center',
+    },
+    totalItemValue: {
+      fontFamily: 'Manrope_800ExtraBold',
+      fontSize: 26,
+      lineHeight: 28,
+      color: colors.paper,
+      letterSpacing: -0.8,
+      textAlign: 'center',
+    },
+    cardRow: {
+      flexDirection: 'row',
       gap: 10,
     },
-    cardStack: {
-      gap: 12,
+    cardSlot: {
+      flex: 1,
+      minWidth: 0,
     },
     summaryList: {
       gap: 12,

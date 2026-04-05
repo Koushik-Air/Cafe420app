@@ -3,7 +3,13 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import { useAppTheme } from '../theme';
 
-export default function SectionCard({ title, subtitle, children, rightSlot }) {
+export default function SectionCard({
+  title,
+  subtitle,
+  children,
+  rightSlot,
+  titleStyle,
+}) {
   const { colors } = useAppTheme();
   const styles = React.useMemo(() => createStyles(colors), [colors]);
 
@@ -11,7 +17,7 @@ export default function SectionCard({ title, subtitle, children, rightSlot }) {
     <View style={styles.card}>
       <View style={styles.header}>
         <View style={styles.copy}>
-          <Text style={styles.title}>{title}</Text>
+          <Text style={[styles.title, titleStyle]}>{title}</Text>
           {subtitle ? <Text style={styles.subtitle}>{subtitle}</Text> : null}
         </View>
         {rightSlot ? <View>{rightSlot}</View> : null}
